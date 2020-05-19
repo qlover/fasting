@@ -1,0 +1,17 @@
+{
+  "name": "fasting",
+  "displayName": "fasting",
+  "expo": {
+    "name": "fasting",
+    "slug": "fasting",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
