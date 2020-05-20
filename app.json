@@ -12,6 +12,8 @@
     ],
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": "fasting -hello world",
+    "githubUrl": "https://github.com/qlover/fasting.git"
   }
 }
