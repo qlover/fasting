@@ -1,19 +1,53 @@
 import * as React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const instructions = Platform.select({
-  ios: `Press Cmd+R to reload,\nCmd+D or shake for dev menu`,
-  android: `Double tap R on your keyboard to reload,\nShake or press menu button for dev menu`,
-});
+const Stack = createStackNavigator();
+
+const Drawer = createDrawerNavigator()
+
+const Tab = createBottomTabNavigator();
+
+/* 主 Tab */
+const Home = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Home1" component={() => (<Text>Home1</Text>)} />
+    <Stack.Screen name="Home2" component={() => (<Text>Home2</Text>)} />
+  </Stack.Navigator>
+);
+const Profile = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Profile1" component={() => (<Text>Profile1</Text>)} />
+    <Stack.Screen name="Profile2" component={() => (<Text>Profile2</Text>)} />
+  </Stack.Navigator>
+);
+const Settings = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Settings1" component={() => (<Text>Settings1</Text>)} />
+    <Stack.Screen name="Settings2" component={() => (<Text>Settings2</Text>)} />
+  </Stack.Navigator>
+);
+
+const Main = () => (
+  <Tab.Navigator>
+    <Tab.Screen name="Home" component={Home} />
+    <Tab.Screen name="Profile" component={Profile} />
+    <Tab.Screen name="Settings" component={Settings} />
+  </Tab.Navigator>
+);
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>欢迎我的磊子来到覃先生用 expo 构建的 APP首页</Text>
-      <Text style={styles.instructions}>To get started, edit App.js</Text>
-      <Text style={styles.instructions}>{instructions}</Text>
-    </View>
-  );
+    <NavigationContainer>
+      <Drawer.Navigator>
+        <Drawer.Screen name="Main" component={Main} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  )
 }
 
 const styles = StyleSheet.create({
