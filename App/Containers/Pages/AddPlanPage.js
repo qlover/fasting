@@ -4,6 +4,8 @@ import Modal from "react-native-modalbox";
 import { Text, Button, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Tabs, Tab, ScrollableTab } from "native-base";
+import { Calendar } from "react-native-calendars";
+import TimeTags from "../../Components/TimeTags";
 
 export default class AddPlanPage extends React.Component {
   constructor() {
@@ -43,6 +45,17 @@ export default class AddPlanPage extends React.Component {
   }
 
   render() {
+    const _times = [
+      { label: "10:00", selected: false },
+      { label: "11:00", selected: false },
+      { label: "12:00", selected: false },
+      { label: "13:00", selected: false },
+      { label: "14:00", selected: true },
+      { label: "15:00", selected: false },
+      { label: "16:00", selected: false },
+      { label: "17:00", selected: false },
+      { label: "18:00", selected: false },
+    ];
     return (
       <ScrollView style={{ flex: 1 }}>
         <Button
@@ -50,73 +63,6 @@ export default class AddPlanPage extends React.Component {
           onPress={() => this.refs.modal6.open()}
           style={styles.btn}
         />
-
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Button
-          title="Position bottom"
-          onPress={() => this.refs.modal6.open()}
-          style={styles.btn}
-        />
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
-        <Text>bg</Text>
 
         <Modal
           style={[styles.modal, styles.modal4]}
@@ -127,21 +73,27 @@ export default class AddPlanPage extends React.Component {
         >
           <View>
             <Tabs renderTabBar={() => <ScrollableTab />}>
-              <Tab heading="日期">
-                <Text>日期</Text>
-                <Text>日期</Text>
-                <Text>日期</Text>
-                <Text>日期</Text>
-                <Text>日期</Text>
-                <Text>日期</Text>
+              <Tab heading="时间" children={<TimeTags />}>
+                
               </Tab>
-              <Tab heading="时间">
-                <Text>时间</Text>
-                <Text>时间</Text>
-                <Text>时间</Text>
-                <Text>时间</Text>
-                <Text>时间</Text>
-                <Text>时间</Text>
+              <Tab heading="日期">
+                <Calendar
+                  // Collection of dates that have to be marked. Default = {}
+                  markedDates={{
+                    "2020-05-16": {
+                      selected: true,
+                      marked: true,
+                      selectedColor: "blue",
+                    },
+                    "2020-05-17": { marked: true },
+                    "2020-05-18": {
+                      marked: true,
+                      dotColor: "red",
+                      activeOpacity: 0,
+                    },
+                    "2020-05-19": { disabled: true, disableTouchEvent: true },
+                  }}
+                />
               </Tab>
             </Tabs>
           </View>
