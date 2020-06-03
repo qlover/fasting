@@ -3,155 +3,107 @@ import Modal from "react-native-modalbox";
 
 import { Text, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Tabs, Tab, Row } from "native-base";
+import { Tabs, Tab, ScrollableTab, Button } from "native-base";
+import { Calendar, Agenda, CalendarList } from "react-native-calendars";
 import TimeTags from "../../Components/TimeTags";
-import { Button } from "react-native-elements";
-Button;
 
 export default class AddPlanPage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      isOpen: false,
-      isDisabled: false,
-      swipeToClose: true,
-      sliderValue: 0.3,
+      timeTags: [
+        { label: "10:00", selected: false },
+        { label: "11:00", selected: false },
+        { label: "12:00", selected: false },
+        { label: "13:00", selected: false },
+        { label: "14:00", selected: true },
+        { label: "15:00", selected: false },
+        { label: "16:00", selected: false },
+        { label: "17:00", selected: false },
+        { label: "18:00", selected: false },
+        { label: "19:00", selected: false },
+        { label: "20:00", selected: false },
+        { label: "21:00", selected: false },
+        { label: "22:00", selected: false },
+        { label: "23:00", selected: false },
+        { label: "00:00", selected: false },
+      ],
+      currentDate: '2020-06-20',
+      currentTime: '12:00',
     };
+    this.onSwitchTimeTag.bind(this)
+  }
+
+  onSwitchTimeTag(tag, index) {
+    let tags = JSON.parse(JSON.stringify(this.state.timeTags));
+    tags.forEach((v, i) => (v.selected = i == index));
+    this.setState({ timeTags: tags, currentTime: tag.label });
+    // this.setState({ currentTime: tag.label })
   }
 
   render() {
+    const vacation = { key: 'vacation', color: 'red', selectedDotColor: 'blue' };
+    const massage = { key: 'massage', color: 'blue', selectedDotColor: 'blue' };
+    const workout = { key: 'workout', color: 'green' };
+
     return (
       <ScrollView style={{ flex: 1 }}>
-        <TimeTags />
+        <Button
+          onPress={() => this.refs.modal6.open()}
+          style={{ marginVertical: 5, marginHorizontal: 10 }}
+        >
+          <Text>Open</Text>
+        </Button>
+
 
         <Modal
-          style={[styles.modal, styles.modal4]}
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: 380,
+            borderTopStartRadius: 15,
+            borderTopEndRadius: 15,
+            overflow: 'hidden'
+          }}
           position={"bottom"}
           ref={"modal6"}
           swipeArea={20}
           coverScreen={true}
         >
           <View>
-            <View style={{ flex: 3, backgroundColor: "#0ff" }}>
-              <Tabs
-                tabBarUnderlineStyle={{
-                  backgroundColor: "#000",
-                  borderRadius: 5,
-                }}
-              >
-                <Tab
-                  tabStyle={{
-                    backgroundColor: "#fff",
+            <Tabs tabBarUnderlineStyle={{ backgroundColor: '#eee' }}>
+              <Tab
+                tabStyle={{ backgroundColor: '#fff' }}
+                activeTabStyle={{ backgroundColor: '#fff' }}
+                activeTextStyle={{ color: '#000' }}
+                heading={this.state.currentDate}>
+                <Calendar
+                  onDayPress={(day) => { this.setState({ currentDate: day.dateString }) }}
+                  markedDates={{
+                    [this.state.currentDate]: { selected: true },
                   }}
-                  activeTabStyle={{ backgroundColor: "#fff" }}
-                  textStyle={{ color: "#000" }}
-                  activeTextStyle={{ color: "#f00" }}
-                  heading="日期"
-                >
-                  <Text>日期</Text>
-                  <Text>日期</Text>
-                  <Text>日期</Text>
-                  <Text>日期</Text>
-                  <Text>日期</Text>
-                  <Text>日期</Text>
-                </Tab>
-                <Tab
-                  tabStyle={{
-                    backgroundColor: "#fff",
-                  }}
-                  activeTabStyle={{ backgroundColor: "#fff" }}
-                  textStyle={{ color: "#000" }}
-                  activeTextStyle={{ color: "#f00" }}
-                  heading="时间"
-                >
-                  <Text>时间</Text>
-                  <Text>时间</Text>
-                  <Text>时间</Text>
-                  <Text>时间</Text>
-                  <Text>时间</Text>
-                  <Text>时间</Text>
-                </Tab>
-              </Tabs>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderWidth: 1,
-                  borderColor: "#000",
-                }}
-              >
-                <Text>确定</Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderWidth: 1,
-                  borderColor: "#000",
-                }}
-              >
-                <Text>取消</Text>
-              </View>
-            </View>
+                />
+              </Tab>
+              <Tab
+                tabStyle={{ backgroundColor: '#fff' }}
+                activeTabStyle={{ backgroundColor: '#fff' }}
+                activeTextStyle={{ color: '#000' }}
+                heading={this.state.currentTime}>
+                <TimeTags onSwitchTag={(tag, index) => this.onSwitchTimeTag(tag, index)} tags={this.state.timeTags} />
+              </Tab>
+            </Tabs>
           </View>
         </Modal>
-      </ScrollView>
+      </ScrollView >
     );
   }
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
-
   modal: {
     justifyContent: "center",
     alignItems: "center",
+    height: 380,
   },
 
-  modal2: {
-    height: 230,
-    backgroundColor: "#3B5998",
-  },
-
-  modal3: {
-    height: 300,
-    width: 300,
-  },
-
-  modal4: {
-    height: 300,
-  },
-
-  btn: {
-    margin: 10,
-    backgroundColor: "#3B5998",
-    color: "white",
-    padding: 10,
-  },
-
-  btnModal: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    width: 50,
-    height: 50,
-    backgroundColor: "#fff",
-  },
-
-  text: {
-    color: "black",
-    fontSize: 22,
-  },
 });
