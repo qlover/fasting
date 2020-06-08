@@ -1,16 +1,17 @@
 import React from "react";
 import Modal from "react-native-modalbox";
 
-import { Text, StyleSheet, View } from "react-native";
+import { Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Tabs, Tab, ScrollableTab, Button } from "native-base";
-import { Calendar, Agenda, CalendarList } from "react-native-calendars";
+import { Tabs, Tab, Button } from "native-base";
+import { Calendar } from "react-native-calendars";
 import TimeTags from "../../Components/TimeTags";
 
 export default class AddPlanPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOpen: false,
       timeTags: [
         { label: "10:00", selected: false },
         { label: "11:00", selected: false },
@@ -28,10 +29,10 @@ export default class AddPlanPage extends React.Component {
         { label: "23:00", selected: false },
         { label: "00:00", selected: false },
       ],
-      currentDate: '2020-06-20',
-      currentTime: '12:00',
+      currentDate: "2020/06/20",
+      currentTime: "12:00",
     };
-    this.onSwitchTimeTag.bind(this)
+    this.onSwitchTimeTag.bind(this);
   }
 
   onSwitchTimeTag(tag, index) {
@@ -41,69 +42,75 @@ export default class AddPlanPage extends React.Component {
     // this.setState({ currentTime: tag.label })
   }
 
-  render() {
-    const vacation = { key: 'vacation', color: 'red', selectedDotColor: 'blue' };
-    const massage = { key: 'massage', color: 'blue', selectedDotColor: 'blue' };
-    const workout = { key: 'workout', color: 'green' };
+  openPicker() {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
 
+  render() {
     return (
       <ScrollView style={{ flex: 1 }}>
         <Button
-          onPress={() => this.refs.modal6.open()}
-          style={{ marginVertical: 5, marginHorizontal: 10 }}
+          style={{
+            marginVertical: 5,
+            marginHorizontal: 20,
+            backgroundColor: "#fff",
+          }}
         >
-          <Text>Open</Text>
+          <Text>Icon</Text>
+          <Text onPress={() => this.openPicker()}>
+            {this.state.currentDate} {this.state.currentTime}
+          </Text>
+          <Text onPress={() => this.openPicker()}>
+            {this.state.currentDate} {this.state.currentTime}
+          </Text>
+          <Text>Icon √</Text>
         </Button>
 
-
         <Modal
+          isOpen={this.state.isOpen}
           style={{
             justifyContent: "center",
             alignItems: "center",
             height: 380,
             borderTopStartRadius: 15,
             borderTopEndRadius: 15,
-            overflow: 'hidden'
+            overflow: "hidden",
           }}
           position={"bottom"}
           ref={"modal6"}
           swipeArea={20}
           coverScreen={true}
         >
-          <View>
-            <Tabs tabBarUnderlineStyle={{ backgroundColor: '#eee' }}>
-              <Tab
-                tabStyle={{ backgroundColor: '#fff' }}
-                activeTabStyle={{ backgroundColor: '#fff' }}
-                activeTextStyle={{ color: '#000' }}
-                heading={this.state.currentDate}>
-                <Calendar
-                  onDayPress={(day) => { this.setState({ currentDate: day.dateString }) }}
-                  markedDates={{
-                    [this.state.currentDate]: { selected: true },
-                  }}
-                />
-              </Tab>
-              <Tab
-                tabStyle={{ backgroundColor: '#fff' }}
-                activeTabStyle={{ backgroundColor: '#fff' }}
-                activeTextStyle={{ color: '#000' }}
-                heading={this.state.currentTime}>
-                <TimeTags onSwitchTag={(tag, index) => this.onSwitchTimeTag(tag, index)} tags={this.state.timeTags} />
-              </Tab>
-            </Tabs>
-          </View>
+          <Tabs tabBarUnderlineStyle={{ backgroundColor: "#eee" }}>
+            <Tab
+              tabStyle={{ backgroundColor: "#fff" }}
+              activeTabStyle={{ backgroundColor: "#fff" }}
+              activeTextStyle={{ color: "#000" }}
+              heading={this.state.currentDate}
+            >
+              <Calendar
+                onDayPress={(day) => {
+                  this.setState({ currentDate: day.dateString });
+                }}
+                markedDates={{
+                  [this.state.currentDate]: { selected: true },
+                }}
+              />
+            </Tab>
+            <Tab
+              tabStyle={{ backgroundColor: "#fff" }}
+              activeTabStyle={{ backgroundColor: "#fff" }}
+              activeTextStyle={{ color: "#000" }}
+              heading={this.state.currentTime}
+            >
+              <TimeTags
+                onSwitchTag={(tag, index) => this.onSwitchTimeTag(tag, index)}
+                tags={this.state.timeTags}
+              />
+            </Tab>
+          </Tabs>
         </Modal>
-      </ScrollView >
+      </ScrollView>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  modal: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 380,
-  },
-
-});
