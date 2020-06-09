@@ -11,7 +11,8 @@ export default class AddPlanPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
+      isOpen: true,
+      switchPicker: !false,
       timeTags: [
         { label: "10:00", selected: false },
         { label: "11:00", selected: false },
@@ -42,8 +43,19 @@ export default class AddPlanPage extends React.Component {
     // this.setState({ currentTime: tag.label })
   }
 
-  openPicker() {
-    this.setState({ isOpen: !this.state.isOpen });
+  openDatePicker() {
+    this.setState({ isOpen: !this.state.isOpen, switchPicker: true });
+  }
+
+  openTimetags() {
+    this.setState({ isOpen: !this.state.isOpen, switchPicker: false });
+  }
+
+  renderModalTitle() {
+    if (!this.state.switchPicker) {
+      return <Text style={{ marginBottom: 20 }}>选择时间</Text>;
+    }
+    return;
   }
 
   render() {
@@ -53,62 +65,74 @@ export default class AddPlanPage extends React.Component {
           style={{
             marginVertical: 5,
             marginHorizontal: 20,
+            paddingVertical: 10,
             backgroundColor: "#fff",
+            flexDirection: "row",
           }}
         >
           <Text>Icon</Text>
-          <Text onPress={() => this.openPicker()}>
-            {this.state.currentDate} {this.state.currentTime}
+          <Text onPress={() => this.openDatePicker()}>
+            {this.state.currentDate}
           </Text>
-          <Text onPress={() => this.openPicker()}>
-            {this.state.currentDate} {this.state.currentTime}
+          <Text onPress={() => this.openTimetags()}>
+            {this.state.currentTime}
           </Text>
+
+          <Text onPress={() => this.openDatePicker()}>
+            {this.state.currentDate}
+          </Text>
+          <Text onPress={() => this.openTimetags()}>
+            {this.state.currentTime}
+          </Text>
+
           <Text>Icon √</Text>
         </Button>
 
         <Modal
           isOpen={this.state.isOpen}
           style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: 380,
+            height: 350,
             borderTopStartRadius: 15,
             borderTopEndRadius: 15,
             overflow: "hidden",
           }}
           position={"bottom"}
-          ref={"modal6"}
           swipeArea={20}
           coverScreen={true}
         >
-          <Tabs tabBarUnderlineStyle={{ backgroundColor: "#eee" }}>
-            <Tab
-              tabStyle={{ backgroundColor: "#fff" }}
-              activeTabStyle={{ backgroundColor: "#fff" }}
-              activeTextStyle={{ color: "#000" }}
-              heading={this.state.currentDate}
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              <Calendar
-                onDayPress={(day) => {
-                  this.setState({ currentDate: day.dateString });
-                }}
-                markedDates={{
-                  [this.state.currentDate]: { selected: true },
-                }}
-              />
-            </Tab>
-            <Tab
-              tabStyle={{ backgroundColor: "#fff" }}
-              activeTabStyle={{ backgroundColor: "#fff" }}
-              activeTextStyle={{ color: "#000" }}
-              heading={this.state.currentTime}
-            >
-              <TimeTags
-                onSwitchTag={(tag, index) => this.onSwitchTimeTag(tag, index)}
-                tags={this.state.timeTags}
-              />
-            </Tab>
-          </Tabs>
+              <Text style={{ fontSize: 30 }}>-</Text>
+              {this.renderModalTitle()}
+            </View>
+            <View style={{ flex: 1 }}>
+              {this.state.switchPicker ? (
+                <Calendar
+                  theme={{
+                    textDayFontSize: 14,
+                    textMonthFontSize: 14,
+                    textDayHeaderFontSize: 14,
+                  }}
+                  onDayPress={(day) => {
+                    this.setState({ currentDate: day.dateString });
+                  }}
+                  markedDates={{
+                    [this.state.currentDate]: { selected: true },
+                  }}
+                />
+              ) : (
+                <TimeTags
+                  onSwitchTag={(tag, index) => this.onSwitchTimeTag(tag, index)}
+                  tags={this.state.timeTags}
+                />
+              )}
+            </View>
+          </View>
         </Modal>
       </ScrollView>
     );

@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-around",
     flexGrow: 4,
-    marginTop: 20,
     paddingHorizontal: 15,
   },
   activeTag: {
