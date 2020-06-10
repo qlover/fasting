@@ -1,14 +1,11 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import DrawerNavigator from "./DrawerNavigator";
-import { createStackNavigator } from "@react-navigation/stack";
-
-const Stack = createStackNavigator();
+import RootStackNavigator from "./RootNavigator/RootStackNavigator";
 
 export default function Root() {
   return (
     <NavigationContainer>
-      <DrawerNavigator />
+      <RootStackNavigator />
     </NavigationContainer>
   );
 }

@@ -10,16 +10,12 @@ export default class My extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View>
-        <Button primary onPress={() => navigate("AddPlan")}>
-          <Text> jump to AddPlan </Text>
+        <Button primary onPress={() => navigate("Home")}>
+          <Text> jump to Home </Text>
         </Button>
-        <Button light><Text> Light </Text></Button>
-        <Button primary><Text> Primary </Text></Button>
-        <Button success><Text> Success </Text></Button>
-        <Button info><Text> Info </Text></Button>
-        <Button warning><Text> Warning </Text></Button>
-        <Button danger><Text> Danger </Text></Button>
-        <Button dark><Text> Dark </Text></Button>
+        <Button primary onPress={() => navigate("Other").navigate("Other1")}>
+          <Text> jump to Other </Text>
+        </Button>
       </View>
     );
   }
