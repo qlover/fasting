@@ -58,13 +58,11 @@ export default class TimeTags extends React.Component<TimeTagsProps, any> {
     this.props.tags.map((item, index) => {
       _items.push(
         <TouchableOpacity
+          key={index + item.label}
           activeOpacity={0.56}
           onPress={() => this.props.onSwitchTag(item, index)}
         >
-          <View
-            key={index + item.label}
-            style={item.selected ? styles.activeTag : baseTagStyle}
-          >
+          <View style={item.selected ? styles.activeTag : baseTagStyle}>
             <Text style={item.selected ? styles.activeText : baseTextStyle}>
               {item.label}
             </Text>

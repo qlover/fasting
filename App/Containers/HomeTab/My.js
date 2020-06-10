@@ -10,11 +10,8 @@ export default class My extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View>
-        <Button primary onPress={() => navigate("Home")}>
+        <Button primary onPress={() => navigate("AddPlan")}>
           <Text> jump to Home </Text>
-        </Button>
-        <Button primary onPress={() => navigate("Other").navigate("Other1")}>
-          <Text> jump to Other </Text>
         </Button>
       </View>
     );
