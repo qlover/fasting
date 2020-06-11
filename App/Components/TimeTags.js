@@ -1,70 +1,45 @@
 import React from "react";
-import Modal from "react-native-modalbox";
-
+import throttle from "lodash/throttle";
 import {
   Text,
-  Button,
   StyleSheet,
   View,
   Dimensions,
-  Alert,
   TouchableOpacity,
 } from "react-native";
-import {
-  ScrollView,
-  TouchableNativeFeedback,
-  TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
-import { Tabs, Tab, ScrollableTab } from "native-base";
 
-const width = Dimensions.get("window").width;
-const single_width = width * 0.28;
-
-export interface TagObject {
-  label: string;
-  selected?: boolean;
-}
-
-export type SwitchCallbackHandler = (tag: TagObject, index: number) => void;
+export type SwitchCallbackHandler = (item: any, index: number) => void;
 
 export interface TimeTagsProps {
   onSwitchTag?: SwitchCallbackHandler;
-  tags?: Array<TagObject>;
+  tags?: Array<any>;
+  selectedIndex?: number;
 }
 
 export default class TimeTags extends React.Component<TimeTagsProps, any> {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   tags: this.props.tags,
-    // };
-    this.toggleItem.bind(this);
+    this._onSwitchTagThrottle = throttle(this._onSwitchTag, 500);
   }
 
-  toggleItem(item, index) {
-    // let tags = JSON.parse(JSON.stringify(this.state.tags));
-    // tags.forEach((v, i) => (v.selected = i == index));
-    // this.setState({ tags: tags });
-    // 点击回调
-    this.props.onSwitchTag && this.props.onSwitchTag(item);
+  _onSwitchTag(item, index) {
+    this.props.onSwitchTag && this.props.onSwitchTag(item, index);
   }
-
-  // UNSAFE_componentWillReceiveProps(newProps) {
-  //   this.setState({ tags: newProps });
-  // }
 
   render() {
     const _items = [];
+    const { selectedIndex } = this.props;
     this.props.tags.map((item, index) => {
+      const selected = selectedIndex == index;
       _items.push(
         <TouchableOpacity
-          key={index + item.label}
+          key={String(index)}
           activeOpacity={0.56}
-          onPress={() => this.props.onSwitchTag(item, index)}
+          onPress={() => this._onSwitchTagThrottle(item, index)}
         >
-          <View style={item.selected ? styles.activeTag : baseTagStyle}>
-            <Text style={item.selected ? styles.activeText : baseTextStyle}>
-              {item.label}
+          <View style={selected ? styles.activeTag : baseTagStyle}>
+            <Text style={selected ? styles.activeText : baseTextStyle}>
+              {item}
             </Text>
           </View>
         </TouchableOpacity>
@@ -73,6 +48,7 @@ export default class TimeTags extends React.Component<TimeTagsProps, any> {
     return <View style={styles.container}>{_items}</View>;
   }
 }
+const single_width = Dimensions.get("window").width * 0.28;
 
 const baseTagStyle = {
   width: single_width,

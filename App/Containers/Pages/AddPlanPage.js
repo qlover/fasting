@@ -1,55 +1,53 @@
 import React from "react";
+import { Text, View, FlatList, ScrollView, StyleSheet } from "react-native";
+import { Button } from "native-base";
+import { Portal, FAB, Provider } from "react-native-paper";
 import Modal from "react-native-modalbox";
-
-import { Text, View, FlatList, ScrollView } from "react-native";
-import { Tabs, Tab, Button } from "native-base";
-import { Calendar, DateObject } from "react-native-calendars";
 import TimeTags, { TagObject } from "../../Components/TimeTags";
+
+import Moment from "moment";
+import { extendMoment } from "moment-range";
+
+const moment = extendMoment(Moment);
 
 export default class AddPlanPage extends React.Component {
   constructor(props) {
     super(props);
+    // 从今天开始后20天日期
+    const interal = moment.rangeFromInterval("day", 15);
+    const dateTags = [
+      ...moment.range(interal.start, interal.end).by("day"),
+    ].map((m) => m.format("MM-DD"));
+
     this.state = {
-      open: false,
+      open: true,
       isOpen: false,
       switchPicker: !false,
       fastingList: [],
-      timeTags: [
-        { label: "10:00", selected: false },
-        { label: "11:00", selected: false },
-        { label: "12:00", selected: false },
-        { label: "13:00", selected: false },
-        { label: "14:00", selected: true },
-        { label: "15:00", selected: false },
-        { label: "16:00", selected: false },
-        { label: "17:00", selected: false },
-        { label: "18:00", selected: false },
-        { label: "19:00", selected: false },
-        { label: "20:00", selected: false },
-        { label: "21:00", selected: false },
-        { label: "22:00", selected: false },
-        { label: "23:00", selected: false },
-        { label: "00:00", selected: false },
-      ],
-      currentDate: "2020-06-20",
-      currentTime: "12:00",
+      dateTags,
+      timeTags: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"],
+      currentTimeIndex: 1,
+      currentDateIndex: 1,
     };
     this.index = 0;
     this.updateKey = "start";
   }
 
   saveFasting = () => {
-    const fastingList = this.state.fastingList.map((v, i) => {
-      let IFObj = {
-        key: v.key,
-        startString: `${v.start.date} ${v.start.time}`,
-        endString: `${v.end.date} ${v.end.time}`,
-      };
-      IFObj.start = new Date(IFObj.startString).getTime();
-      IFObj.end = new Date(IFObj.endString).getTime();
-      IFObj.diff = IFObj.end - IFObj.start;
-      return IFObj;
-    });
+    const fastingList = this.state.fastingList
+      .map((v) => {
+        let IFObj = {
+          key: v.key,
+          startString: `${v.start.date} ${v.start.time}`,
+          endString: `${v.end.date} ${v.end.time}`,
+        };
+        IFObj.start = new Date(IFObj.startString).getTime();
+        IFObj.end = new Date(IFObj.endString).getTime();
+        IFObj.diff = IFObj.end - IFObj.start;
+        return IFObj;
+      })
+      .sort((i1, i2) => i1.diff - i2.diff) // 按相差值排序
+      .sort((i1, i2) => i1.start - i2.start);
     console.log(fastingList);
   };
 
@@ -74,8 +72,14 @@ export default class AddPlanPage extends React.Component {
   addFastingItem = (item) => {
     item = item || {
       key: (Math.random() * (Math.random() | 10)).toString().substr(13),
-      start: { date: "2020-06-08", time: "21:10" },
-      end: { date: "2020-06-08", time: "21:10" },
+      start: {
+        date: moment().format("MM-DD"),
+        time: moment().format("HH:mm"),
+      },
+      end: {
+        date: moment().format("MM-DD"),
+        time: moment().format("HH:mm"),
+      },
     };
     this.setState({ fastingList: [...this.state.fastingList, item] });
   };
@@ -86,34 +90,28 @@ export default class AddPlanPage extends React.Component {
     });
   };
 
-  editFaastingItemDate = (day: DateObject) => {
+  editFaastingItemDate = (tag, index) => {
     this.setState({
+      currentDateIndex: index,
       fastingList: this.state.fastingList.map((item, i) =>
         i == this.index
           ? {
               ...item,
-              [this.updateKey]: {
-                ...item[this.updateKey],
-                date: day.dateString,
-              },
+              [this.updateKey]: { ...item[this.updateKey], date: tag },
             }
           : item
       ),
     });
   };
 
-  editFaastingItemTime = (tag: TagObject, index: number) => {
+  editFaastingItemTime = (tag, index) => {
     this.setState({
-      timeTags: this.state.timeTags.map((item, i) => ({
-        ...item,
-        selected: i == index,
-      })),
-      currentTime: tag.label,
+      currentTimeIndex: index,
       fastingList: this.state.fastingList.map((item, i) =>
         i == this.index
           ? {
               ...item,
-              [this.updateKey]: { ...item[this.updateKey], time: tag.label },
+              [this.updateKey]: { ...item[this.updateKey], time: tag },
             }
           : item
       ),
@@ -158,65 +156,76 @@ export default class AddPlanPage extends React.Component {
   }
 
   render() {
-    // console.log(this.state.fastingList);
-
     return (
-      <ScrollView>
-        <Button primary onPress={() => this.addFastingItem()}>
-          <Text> Primary </Text>
-        </Button>
-        <Button success onPress={this.saveFasting}>
-          <Text> Primary </Text>
-        </Button>
-        <FlatList
-          data={this.state.fastingList}
-          renderItem={this.renderFastingItem}
-          keyExtractor={this.renderFastingItemKey}
-          ListEmptyComponent={() => <Text>暂无数据</Text>}
-        />
-
-        <Modal
-          isOpen={this.state.isOpen}
-          style={{
-            height: 350,
-            borderTopStartRadius: 15,
-            borderTopEndRadius: 15,
-            overflow: "hidden",
-          }}
-          position={"bottom"}
-          swipeArea={20}
-          coverScreen={true}
-        >
-          <View style={{ flex: 1 }}>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 30 }}>-</Text>
-              {this.renderModalTitle()}
-            </View>
+      <Provider>
+        <ScrollView>
+          <FlatList
+            data={this.state.fastingList}
+            renderItem={this.renderFastingItem}
+            keyExtractor={this.renderFastingItemKey}
+            ListEmptyComponent={() => <Text>暂无数据</Text>}
+          />
+          <Modal
+            isOpen={this.state.isOpen}
+            style={{
+              height: 350,
+              borderTopStartRadius: 15,
+              borderTopEndRadius: 15,
+              overflow: "hidden",
+            }}
+            position={"bottom"}
+            swipeArea={20}
+            coverScreen={true}
+          >
             <View style={{ flex: 1 }}>
-              {this.state.switchPicker ? (
-                <Calendar
-                  theme={{
-                    textDayFontSize: 14,
-                    textMonthFontSize: 14,
-                    textDayHeaderFontSize: 14,
-                  }}
-                  onDayPress={this.editFaastingItemDate}
-                />
-              ) : (
-                <TimeTags
-                  onSwitchTag={this.editFaastingItemTime}
-                  tags={this.state.timeTags}
-                />
-              )}
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ fontSize: 30 }}>-</Text>
+                {this.renderModalTitle()}
+              </View>
+              <View style={{ flex: 1 }}>
+                {this.state.switchPicker ? (
+                  <TimeTags
+                    onSwitchTag={this.editFaastingItemDate}
+                    tags={this.state.dateTags}
+                    selectedIndex={this.state.currentDateIndex}
+                  />
+                ) : (
+                  <TimeTags
+                    onSwitchTag={this.editFaastingItemTime}
+                    tags={this.state.timeTags}
+                    selectedIndex={this.state.currentTimeIndex}
+                  />
+                )}
+              </View>
             </View>
-          </View>
-        </Modal>
-      </ScrollView>
+          </Modal>
+        </ScrollView>
+
+        <Portal>
+          <FAB
+            icon="plus"
+            style={[styles.fab, { bottom: 10 }]}
+            onPress={() => this.saveFasting()}
+          />
+          <FAB
+            icon="plus"
+            style={[styles.fab, { bottom: 80 }]}
+            onPress={() => this.addFastingItem(null)}
+          />
+        </Portal>
+      </Provider>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  fab: {
+    position: "absolute",
+    right: 10,
+  },
+});
