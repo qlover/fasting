@@ -165,46 +165,46 @@ export default class AddPlanPage extends React.Component {
             keyExtractor={this.renderFastingItemKey}
             ListEmptyComponent={() => <Text>暂无数据</Text>}
           />
-          <Modal
-            isOpen={this.state.isOpen}
-            style={{
-              height: 350,
-              borderTopStartRadius: 15,
-              borderTopEndRadius: 15,
-              overflow: "hidden",
-            }}
-            position={"bottom"}
-            swipeArea={20}
-            coverScreen={true}
-          >
-            <View style={{ flex: 1 }}>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ fontSize: 30 }}>-</Text>
-                {this.renderModalTitle()}
-              </View>
-              <View style={{ flex: 1 }}>
-                {this.state.switchPicker ? (
-                  <TimeTags
-                    onSwitchTag={this.editFaastingItemDate}
-                    tags={this.state.dateTags}
-                    selectedIndex={this.state.currentDateIndex}
-                  />
-                ) : (
-                  <TimeTags
-                    onSwitchTag={this.editFaastingItemTime}
-                    tags={this.state.timeTags}
-                    selectedIndex={this.state.currentTimeIndex}
-                  />
-                )}
-              </View>
-            </View>
-          </Modal>
         </ScrollView>
+        <Modal
+          isOpen={this.state.isOpen}
+          style={{
+            height: 350,
+            borderTopStartRadius: 15,
+            borderTopEndRadius: 15,
+            overflow: "hidden",
+          }}
+          position={"bottom"}
+          swipeArea={20}
+          coverScreen={true}
+        >
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontSize: 30 }}>-</Text>
+              {this.renderModalTitle()}
+            </View>
+            <View style={{ flex: 1 }}>
+              {this.state.switchPicker ? (
+                <TimeTags
+                  onSwitchTag={this.editFaastingItemDate}
+                  tags={this.state.dateTags}
+                  selectedIndex={this.state.currentDateIndex}
+                />
+              ) : (
+                <TimeTags
+                  onSwitchTag={this.editFaastingItemTime}
+                  tags={this.state.timeTags}
+                  selectedIndex={this.state.currentTimeIndex}
+                />
+              )}
+            </View>
+          </View>
+        </Modal>
 
         <Portal>
           <FAB

@@ -1,6 +1,5 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Text } from "react-native";
 import MainTabNavigator from "./MainTabNavigator";
 import OtherStackNavigator from "./OtherStackNavigator";
 import ModalStackNavigator from "./ModalStackNavigator";
