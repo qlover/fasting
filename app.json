@@ -13,7 +13,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": "fasting -hello world",
+    "description": "IFapp and Fasting",
     "githubUrl": "https://github.com/qlover/fasting.git"
   }
 }
