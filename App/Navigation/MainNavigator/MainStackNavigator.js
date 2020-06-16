@@ -13,15 +13,8 @@ export default function MainStackNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        options={{
-          title: "home",
-          headerStyle: {
-            backgroundColor: "#0D6ACB",
-          },
-          headerLeft: HeaderLeft,
-          headerTitle: HeaderTitle,
-          headerRight: HeaderRight,
-        }}
+        // 取消首页tab 导航的 header, 下面的 HomeTabSubStackNavigator 有自定义 header
+        options={{ headerShown: false }}
         name="HomeTab"
         component={HomeTabSubStackNavigator}
       />

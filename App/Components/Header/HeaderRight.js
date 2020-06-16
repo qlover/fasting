@@ -6,12 +6,12 @@ export default function HeaderRight() {
   return (
     <View
       style={{
-        width: 38,
-        height: 38,
+        width: 35,
+        height: 35,
         marginRight: 20,
         borderWidth: 3,
         borderColor: "#fff",
-        borderRadius: 38,
+        borderRadius: 35,
         alignItems: "center",
       }}
     >

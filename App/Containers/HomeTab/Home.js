@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 // 进度条
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 // 样式
-import TabsScreenStyle from "../_Styles/TabsScreenStyle";
+import Styles from "../_Styles/TabsScreenStyle";
 import { Progress } from "../../Themes/Props";
 import { NOTFI_ACTOIN_OK } from "../../Config/events";
 import Ionicons from "react-native-vector-icons/AntDesign";
+import Row, { Col, RowStyle } from "../../Components/Row";
 
 let timer = null;
 let PERCENT_FULL = 100;
@@ -147,18 +148,18 @@ class Home extends Component {
   /* 渲染部分 */
   renderGroup() {
     return (
-      <View style={TabsScreenStyle.groupAround}>
-        <View style={TabsScreenStyle.groupChild}>
+      <View style={Styles.groupAround}>
+        <View style={Styles.groupChild}>
           <Text>o</Text>
           <Text>已达成</Text>
           <Text>0</Text>
         </View>
-        <View style={TabsScreenStyle.groupChild}>
+        <View style={Styles.groupChild}>
           <Text>o</Text>
           <Text>未达成</Text>
           <Text>0</Text>
         </View>
-        <View style={TabsScreenStyle.groupChild}>
+        <View style={Styles.groupChild}>
           <Text>o</Text>
           <Text>剩余</Text>
           <Text>0</Text>
@@ -177,12 +178,12 @@ class Home extends Component {
       style: { marginVertical: 40 },
     };
     return (
-      <ScrollView>
-        <View style={TabsScreenStyle.topContainer}>
+      <ScrollView style={Styles.container}>
+        <View style={Styles.topContainer}>
           <AnimatedCircularProgress {...props}>
             {this.progressText()}
           </AnimatedCircularProgress>
-          <View style={TabsScreenStyle.opactiyBtn}>
+          <View style={Styles.opactiyBtn}>
             <Ionicons
               style={{ color: "#fff", fontSize: 20, marginRight: 10 }}
               name="plus"
@@ -191,6 +192,33 @@ class Home extends Component {
               New Plan
             </Text>
           </View>
+        </View>
+
+        <View style={Styles.sectionContainer}>
+          <Row style={Styles.section}>
+            <Col center shadow type="rect" style={Styles.cardBoxLeft}>
+              <Ionicons name="setting" size={28} color="#d2d2d2" />
+              <Text style={Styles.title}>6,291</Text>
+              <Text style={Styles.subText}>of 10,000 steps</Text>
+            </Col>
+            <Col center shadow type="rect" style={Styles.cardBoxRight}>
+              <Ionicons name="fire" size={28} color="#d2d2d2" />
+              <Text style={Styles.title}>521</Text>
+              <Text style={Styles.subText}>of 2,000 cal</Text>
+            </Col>
+          </Row>
+          <Col center shadow style={Styles.section}>
+            <Text style={Styles.subText}>Yerterday</Text>
+            <Ionicons name="setting" size={28} color="#d2d2d2" />
+            <Text style={Styles.title}>设置</Text>
+          </Col>
+          <Col center shadow style={Styles.section}>
+            <Text st yle={Styles.subText}>
+              Week
+            </Text>
+            <Ionicons name="setting" size={28} color="#d2d2d2" />
+            <Text style={Styles.title}>设置</Text>
+          </Col>
         </View>
       </ScrollView>
     );

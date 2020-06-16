@@ -22,12 +22,13 @@ export default StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    ...Fonts.style.h6,
-    color: Colors.facebook,
+    fontSize: Fonts.size.h4,
+    fontWeight: "bold",
+    color: Colors.showText,
     margin: Metrics.smallMargin,
   },
   subText: {
     fontSize: Fonts.size.small,
-    color: Colors.drawer,
+    color: Colors.gray,
   },
 });

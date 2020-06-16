@@ -8,6 +8,8 @@ import MyStackNavigator from "./MyStackNavigator";
 import Home from "../../../Containers/HomeTab/Home";
 import Count from "../../../Containers/HomeTab/Count";
 import My from "../../../Containers/HomeTab/My";
+import HeaderLeft from "../../../Components/Header/HeaderLeft";
+import HeaderRight from "../../../Components/Header/HeaderRight";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -17,7 +19,7 @@ const BottomTab = createBottomTabNavigator();
 export default class HomeTabSubStackNavigator extends React.Component {
   render() {
     return (
-      <BottomTab.Navigator initialRouteName="My">
+      <BottomTab.Navigator tabBarOptions={{}}>
         <BottomTab.Screen name="Home" component={HomeStackNavigator} />
         <BottomTab.Screen name="Count" component={CountStackNavigator} />
         <BottomTab.Screen name="My" component={MyStackNavigator} />
