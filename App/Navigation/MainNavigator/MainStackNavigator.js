@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import MainTabNavigator from "./MainTabNavigator";
+import HomeTabSubStackNavigator, { HomeTabNavigator } from "./HomeTabNavigator";
 import OtherStackNavigator from "./OtherStackNavigator";
 import ModalStackNavigator from "./ModalStackNavigator";
 import AddPlanPage from "../../Containers/Pages/AddPlanPage";
@@ -14,7 +14,7 @@ export default function MainStackNavigator() {
     <Stack.Navigator>
       <Stack.Screen
         options={{
-          title: "标题title",
+          title: "home",
           headerStyle: {
             backgroundColor: "#0D6ACB",
           },
@@ -23,7 +23,7 @@ export default function MainStackNavigator() {
           headerRight: HeaderRight,
         }}
         name="HomeTab"
-        component={MainTabNavigator}
+        component={HomeTabSubStackNavigator}
       />
       <Stack.Screen name="AddPlan" component={AddPlanPage} />
 
