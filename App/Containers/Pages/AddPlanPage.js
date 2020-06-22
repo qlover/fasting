@@ -1,12 +1,25 @@
 import React from "react";
-import { Text, View, FlatList, ScrollView, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import { Button } from "native-base";
 import { Portal, FAB, Provider } from "react-native-paper";
 import Modal from "react-native-modalbox";
-import TimeTags, { TagObject } from "../../Components/TimeTags";
+import Ionicons from "react-native-vector-icons/AntDesign";
+
+import TimeTags from "../../Components/TimeTags";
+import FadeView, { dur } from "../../Components/FadeView";
 
 import Moment from "moment";
 import { extendMoment } from "moment-range";
+import colors from "../../Themes/Colors";
+import { throttle } from "lodash";
 
 const moment = extendMoment(Moment);
 
@@ -31,6 +44,8 @@ export default class AddPlanPage extends React.Component {
     };
     this.index = 0;
     this.updateKey = "start";
+
+    this.addFastingItem = throttle(this._addFastingItem, dur * 2);
   }
 
   saveFasting = () => {
@@ -51,6 +66,10 @@ export default class AddPlanPage extends React.Component {
     console.log(fastingList);
   };
 
+  componentDidMount() {
+    this.addFastingItem();
+  }
+
   openDatePicker(index, update) {
     this.index = index;
     this.updateKey = update;
@@ -69,7 +88,7 @@ export default class AddPlanPage extends React.Component {
     });
   }
 
-  addFastingItem = (item) => {
+  _addFastingItem = (item) => {
     item = item || {
       key: (Math.random() * (Math.random() | 10)).toString().substr(13),
       start: {
@@ -80,13 +99,30 @@ export default class AddPlanPage extends React.Component {
         date: moment().format("MM-DD"),
         time: moment().format("HH:mm"),
       },
+      fade: "FadeIn",
     };
     this.setState({ fastingList: [...this.state.fastingList, item] });
   };
 
+  fadeOutFastingItem = (index) => {
+    this.setState({
+      fastingList: this.state.fastingList.map((item, i) =>
+        i == index
+          ? {
+              ...item,
+              fade: "FadeOut",
+            }
+          : item
+      ),
+    });
+  };
+
   delFastingItem = (index) => {
     this.setState({
-      fastingList: this.state.fastingList.filter((_, i) => i !== index),
+      // fastingList: this.state.fastingList.filter((_, i) => i !== index),
+      fastingList: this.state.fastingList.filter(
+        (item, i) => i == index && item.fade !== "FadeOut"
+      ),
     });
   };
 
@@ -119,33 +155,93 @@ export default class AddPlanPage extends React.Component {
   };
 
   renderFastingItem = ({ item, index, separators }) => (
-    <Button
-      key={index}
-      style={{
-        marginVertical: 5,
-        marginHorizontal: 20,
-        paddingVertical: 10,
-        backgroundColor: "#fff",
-        flexDirection: "row",
-      }}
+    <FadeView
+      type={this.state.fastingList[index]["fade"]}
+      onFadeOut={() => this.delFastingItem(index)}
     >
-      <Text>Icon</Text>
-      <Text onPress={() => this.openDatePicker(index, "start")}>
-        {item.start.date}
-      </Text>
-      <Text onPress={() => this.openTimetags(index, "start")}>
-        {item.start.time}
-      </Text>
-      <Text onPress={() => this.openDatePicker(index, "end")}>
-        {item.end.date}
-      </Text>
-      <Text onPress={() => this.openTimetags(index, "end")}>
-        {item.end.time}
-      </Text>
-      <Text onPress={() => this.delFastingItem(index)}>X</Text>
-    </Button>
+      <View
+        style={{
+          marginHorizontal: 20,
+          marginBottom: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: "#fff",
+          borderRadius: 8,
+        }}
+      >
+        <View style={{ flex: 2, alignItems: "center" }}>
+          <Text>未完成</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            alignItems: "center",
+            flex: 7,
+            marginVertical: 15,
+          }}
+        >
+          <Button
+            style={{
+              flex: 3,
+              height: 28,
+              paddingHorizontal: 8,
+              borderRadius: 8,
+              backgroundColor: colors.themeColor,
+            }}
+          >
+            <Text
+              style={{ fontSize: 14, color: "#fff", marginRight: 5 }}
+              onPress={() => this.openDatePicker(index, "start")}
+            >
+              {item.start.date}
+            </Text>
+            <Text
+              style={{ fontSize: 14, color: "#fff" }}
+              onPress={() => this.openTimetags(index, "start")}
+            >
+              {item.start.time}
+            </Text>
+          </Button>
+          <View
+            style={{ flex: 1, height: 4, backgroundColor: colors.themeColor }}
+          ></View>
+          <Button
+            style={{
+              flex: 3,
+              height: 28,
+              paddingHorizontal: 8,
+              borderRadius: 8,
+              backgroundColor: colors.themeColor,
+            }}
+          >
+            <Text
+              style={{ fontSize: 14, color: "#fff", marginRight: 5 }}
+              onPress={() => this.openDatePicker(index, "end")}
+            >
+              {item.end.date}
+            </Text>
+            <Text
+              style={{ fontSize: 14, color: "#fff" }}
+              onPress={() => this.openTimetags(index, "end")}
+            >
+              {item.end.time}
+            </Text>
+          </Button>
+        </View>
+        <View style={{ marginHorizontal: 8, alignItems: "center" }}>
+          <TouchableOpacity>
+            <Ionicons
+              onPress={() => this.fadeOutFastingItem(index)}
+              style={{ color: "#f00", fontSize: 20 }}
+              name2="closecircleo"
+              name="closecircle"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </FadeView>
   );
-
   renderFastingItemKey = (item) => item.key;
 
   renderModalTitle() {
@@ -156,6 +252,7 @@ export default class AddPlanPage extends React.Component {
   }
 
   render() {
+    console.log("fasting", this.state.fastingList);
     return (
       <Provider>
         <ScrollView>

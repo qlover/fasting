@@ -4,6 +4,7 @@ import { Text } from "react-native";
 import Count from "../../../Containers/HomeTab/Count";
 import HeaderLeft from "../../../Components/Header/HeaderLeft";
 import HeaderRight from "../../../Components/Header/HeaderRight";
+import colors from "../../../Themes/Colors";
 
 const Stack = createStackNavigator();
 
@@ -13,7 +14,7 @@ export default function CountStackNavigator() {
       <Stack.Screen
         options={{
           headerStyle: {
-            backgroundColor: "#0D6ACB",
+            backgroundColor: colors.themeColor,
             elevation: 0,
           },
           headerLeft: HeaderLeft,

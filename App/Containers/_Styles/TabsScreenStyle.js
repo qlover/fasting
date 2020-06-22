@@ -6,7 +6,7 @@ export default StyleSheet.create({
   ...AppStyles.screen,
   ...AppStyles.card,
   topContainer: {
-    backgroundColor: "#0D6ACB",
+    backgroundColor: Colors.themeColor,
     alignItems: "center",
     minHeight: 200,
   },

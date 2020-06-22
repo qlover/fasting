@@ -11,7 +11,7 @@ import HeaderTitle from "../../Components/Header/HeaderTitle";
 const Stack = createStackNavigator();
 export default function MainStackNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="AddPlan">
       <Stack.Screen
         // 取消首页tab 导航的 header, 下面的 HomeTabSubStackNavigator 有自定义 header
         options={{ headerShown: false }}

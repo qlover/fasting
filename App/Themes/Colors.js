@@ -24,6 +24,7 @@ const colors = {
   backgroundColor: "#3d5875", // 进度条背景色
   showText: "#0B69CB", // 页面展示文字
   gray: "#768681", // 灰度文字颜色
+  themeColor: "#0D6ACB",
 };
 
 export default colors;

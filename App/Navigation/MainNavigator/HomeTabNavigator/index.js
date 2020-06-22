@@ -19,7 +19,7 @@ const BottomTab = createBottomTabNavigator();
 export default class HomeTabSubStackNavigator extends React.Component {
   render() {
     return (
-      <BottomTab.Navigator tabBarOptions={{}}>
+      <BottomTab.Navigator initialRouteName="My" tabBarOptions={{}}>
         <BottomTab.Screen name="Home" component={HomeStackNavigator} />
         <BottomTab.Screen name="Count" component={CountStackNavigator} />
         <BottomTab.Screen name="My" component={MyStackNavigator} />
